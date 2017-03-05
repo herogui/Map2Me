@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html style="width:100%; height:100%"> 	
+<head> 
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title></title> 
+ 
+</head> 
+<body style="width:100%; height:100%; overflow:hidden"> 	
+	<div id="map"  style="width:100%;float:left; "> 
+	</div> 
+	<script type="text/javascript" src="http://api.tianditu.com/js/maps.js"></script>  
+  
+	<script  type="text/javascript">
+
+	    var map
+	    var listDisctrit = [];
+
+	    var img = "http://api.tianditu.com/img/map/markerA.png"; //这里为统一的图标	   
+
+        //经度 纬度  编码  名称  图标
+	    listDisctrit.push(new districtObj(114.98, 7.12, 1, "吉州区", img))
+	    listDisctrit.push(new districtObj(115.0, 27.1, 2, "青原区", img))
+	    listDisctrit.push(new districtObj(114.9, 27.05, 3, "吉安县",img))
+	    listDisctrit.push(new districtObj(115.13, 27.22, 4, "吉水县",img))
+	    listDisctrit.push(new districtObj(115.33, 27.62, 5, "峡江县", img))
+	    listDisctrit.push(new districtObj(115.4, 27.77, 6, "新干县", img))
+	    listDisctrit.push(new districtObj(115.43, 27.32, 7, "永丰县",img))
+	    listDisctrit.push(new districtObj(114.88, 26.8, 8, "泰和县", img))
+	    listDisctrit.push(new districtObj(114.52, 26.33, 9, "遂川县",img))
+	    listDisctrit.push(new districtObj(114.78, 26.47, 10, "万安县", img))
+	    listDisctrit.push(new districtObj(114.62, 27.38, 11, "安福县", img))
+	    listDisctrit.push(new districtObj(114.23, 26.95, 12, "永新县", img))
+	    listDisctrit.push(new districtObj(114.27, 26.72, 13, "井冈山市",img))
+	    
+
+	    window.onload = function () {
+	        //高度自适应
+	        document.getElementById("map").style.minHeight = document.body.clientHeight + "px";
+
+	        //加载天地图
+	        initMap();
+
+	        //添加覆盖物            
+	        addMarker();
+	    }
+
+	    function initMap() {
+	        map = new TMap("map");
+	        map.centerAndZoom(new TLngLat(114.98, 27.12), 8); //经度  纬度  地图级别(数字越大  越详细)  
+	        map.enableHandleMouseScroll();
+	        map.enableInertia();
+	        map.enableHandleKeyboard();
+	        map.enableDoubleClickZoom();
+	        var config = {
+	            type: "TMAP_NAVIGATION_CONTROL_LARGE",
+	            anchor: "TMAP_ANCHOR_TOP_RIGHT",
+	            offset: [0, 0],
+	            showZoomInfo: true
+	        };
+	        control = new TNavigationControl(config);
+	        map.addControl(control);
+	    }
+
+	    function addMarker() {
+
+	        for (var i = 0; i < this.listDisctrit.length; i++) {
+                 //使用闭包  添加点和事件
+	            (function () {
+	                var obj = this.listDisctrit[i];
+
+	                //创建图片对象
+	                var icon = new TIcon(obj.image, new TSize(19, 27), { anchor: new TPixel(9, 27) });
+	                //向地图上添加自定义标注
+	                var marker = new TMarker(new TLngLat(obj.lon, obj.lat), { icon: icon });
+	                map.addOverLay(marker);
+	                TEvent.addListener(marker, "click", function (p) {
+	                    for (var j = 0; j < listDisctrit.length; j++) {
+	                        var obj2 = listDisctrit[j];
+	                        var isb = obj2.isClk(marker.getLngLat().getLng(), marker.getLngLat().getLat());
+	                        if (isb) {
+	                            alert("当前县：" + obj2.name + "," + "当前县编码：" + obj2.code);
+	                            //**************请在这里添加业务代码**********************
+	                            if (obj2.code == "1") { 
+                                  
+                                }
+	                            else if (obj2.code == "2") {
+
+	                            }
+
+	                            //**************请在这里添加业务代码end**********************
+	                            break;
+	                        }
+	                    }
+	                });
+	            })(); 
+           }
+	    }
+
+	    //各个县的点对象
+	    function districtObj(lon, lat, code, name, image) {
+	        this.lon = lon;
+	        this.lat = lat;
+	        this.code = code;
+	        this.name = name;
+	        this.image = image;
+	        this.isClk = function(lon2, lat2)
+	        {
+	            if (this.lon == lon2 && lat == lat2) {
+	                return true;
+	            }
+	            else return false;
+            }
+        }
+	</script> 
+</body> 
+</html>
+

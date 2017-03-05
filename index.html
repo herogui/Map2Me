@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html style="width:100%;height:100%">
 <head>
@@ -27,8 +27,17 @@ function initMap() {
 		center:{lat:26.57 ,lng:106.71 },
 		 disableDefaultUI:true,
 		 mapTypeId: google.maps.MapTypeId.HYBRID//MapTypeId.ROADMAP    MapTypeId.SATELLITE   MapTypeId.HYBRID   MapTypeId.TERRAIN
-		});
-}
+        });
+
+        var myLatLng = { lat: 26.57,lng: 106.71};
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+        });
+
+        marker.setMap(map);
+               
+        }
+    
 </script>
  
 </html>
